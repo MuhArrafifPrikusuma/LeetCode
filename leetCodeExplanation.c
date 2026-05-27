@@ -3,6 +3,7 @@
  */
 #include <stdbool.h>
 #include <stdlib.h>
+#include <string.h>
 typedef struct {
   int key;
   int index;
@@ -74,4 +75,81 @@ bool isPalindrome(int x) {
     x /= 10;
   }
   return original == reverse;
+}
+
+/*
+ * leetCode #13
+ */
+int romanToValue(char c) {
+  switch (c) {
+  case 'I':
+    return 1;
+  case 'V':
+    return 5;
+  case 'X':
+    return 10;
+  case 'L':
+    return 50;
+  case 'C':
+    return 100;
+  case 'D':
+    return 500;
+  case 'M':
+    return 1000;
+  default:
+    return 0;
+  }
+}
+int romanToInt(char *s) {
+  int total = 0;
+  int length = strlen(s);
+  for (int i = 0; i < length; i++) {
+    int currentValue = romanToValue(s[i]);
+    if (i + 1 < length && currentValue < romanToValue(s[i + 1])) {
+      total -= currentValue;
+    } else {
+      total += currentValue;
+    }
+  }
+  return total;
+}
+/*
+ * leetCode #14
+ */
+char *longestCommonPrefix(char **strs, int strsSize) {
+  if (strsSize == 0)
+    return "";
+
+  char *base = strs[0];
+
+  for (int i = 0; base[i] != '\0'; i++) {
+    char currentChar = base[i];
+
+    for (int j = 0; j < strsSize; j++) {
+      if (strs[j][i] == '\0' || strs[j][i] != currentChar) {
+        base[i] = '\0';
+        return base;
+      }
+    }
+  }
+  return base;
+}
+/*
+ * leetCode #15
+ */
+int compareAscend(const void *a, const void *b) {
+  return *(int *)a - *(int *)b;
+}
+int **threeSum(int *nums, int numsSize, int *returnSize,
+               int **returnColumnSizes) {
+  qsort(nums, numsSize, sizeof(int), compareAscend);
+
+  int capacity = 16;
+  int **result = malloc(capacity * sizeof(int));
+  *returnSize = 0;
+
+  for (int i = 0; i < numsSize; i++) {
+    if (nums[i] > 0)
+      break;
+  }
 }
