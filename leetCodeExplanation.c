@@ -2,6 +2,7 @@
  * leetcode #1
  */
 #include <stdbool.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 typedef struct {
@@ -152,4 +153,53 @@ int **threeSum(int *nums, int numsSize, int *returnSize,
     if (nums[i] > 0)
       break;
   }
+}
+// leetcode 2 (add two numbers)
+struct ListNode {
+  int val;
+  struct ListNode *next;
+};
+struct ListNode *addTwoNumbers(struct ListNode *l1, struct ListNode *l2) {
+  // create a dummy struct for easier data transfer
+  struct ListNode dummy;
+  // NULL it to avoid garbage value
+  dummy.val = 0;
+  dummy.next = NULL;
+
+  int carry = 0;
+  // current is pointing at the address of dummy therefore any value added to
+  // current will goes to dummy
+  struct ListNode *current = &dummy;
+  // if any of this still exist then continue the loop
+  while (l1 != NULL || l2 != NULL || carry != 0) {
+    // set value for val1 and val2 if it exist and 0 if not
+    int val1 = (l1 != NULL) ? l1->val : 0;
+    int val2 = (l2 != NULL) ? l2->val : 0;
+
+    int sum = val1 + val2 + carry;
+    // extract 10 places so and carry it to the next addition
+    carry = sum / 10;
+
+    // allocate memory for the entire node
+    struct ListNode *newNode = malloc(sizeof(struct ListNode));
+    if (newNode == NULL)
+      printf("failed to allocate memory");
+    // extract 1 places
+    newNode->val = sum % 10;
+    newNode->next = NULL;
+
+    // move current pointer to the tail of ListNode by changing it's memory
+    // address
+    current->next = newNode;
+    current = current->next;
+
+    // advance aslong as there is a value in it
+    if (l1 != NULL)
+      l1 = l1->next;
+    if (l2 != NULL)
+      l2 = l2->next;
+  }
+  // assign the pointer to the first valid node right after the dummy node
+  struct ListNode *result = dummy.next;
+  return result;
 }
