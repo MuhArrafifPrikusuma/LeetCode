@@ -1,4 +1,4 @@
-/*
+/*index
  * leetcode #1
  */
 #include <stdbool.h>
@@ -208,4 +208,27 @@ struct ListNode *addTwoNumbers(struct ListNode *l1, struct ListNode *l2) {
   struct ListNode *result = dummy.next;
 
   return result;
+}
+
+// #3 Longest Substring Without repeating characters
+
+int lengthOfLongestSubstring(char *s) {
+  int lastSeen[128] = {0};
+  int maxLength = 0;
+  int left = 0;
+
+  for (int right = 0; s[right] != '\0'; right++) {
+    unsigned char currentChar = s[right];
+
+    if (lastSeen[currentChar] > left) {
+      left = lastSeen[currentChar];
+    }
+    lastSeen[currentChar] = right + 1;
+
+    int currentWindowLength = right - left + 1;
+    if (currentWindowLength > maxLength) {
+      maxLength = currentWindowLength;
+    }
+  }
+  return maxLength;
 }
