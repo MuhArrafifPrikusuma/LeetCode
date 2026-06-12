@@ -80,3 +80,31 @@ struct ListNode *addTwoNumbers(struct ListNode *l1, struct ListNode *l2) {
 
   return result;
 }
+// #5 Largest palindromic substring
+int palindromSize(char *s, int left, int right) {
+  while (left >= 0 && s[right] != '\0' && s[left] == s[right]) {
+    left--;
+    right++;
+  }
+  return right - left - 1;
+}
+char *longestPalindrome(char *s) {
+  int start = 0;
+  int maxLength = 0;
+  int len = strlen(s);
+
+  for (int i = 0; i < len; i++) {
+    int len1 = palindromSize(s, i, i);
+    int len2 = palindromSize(s, i, i + 1);
+
+    int currentLength = (len1 > len2) ? len1 : len2;
+
+    if (currentLength > maxLength) {
+      maxLength = currentLength;
+      start = i - (maxLength - 1) / 2;
+    }
+  }
+  s[start + maxLength] = '\0';
+
+  return &s[start];
+}

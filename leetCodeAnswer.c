@@ -1,4 +1,5 @@
 #include <limits.h>
+#include <math.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -300,4 +301,36 @@ char *longestPalindrome(char *s) {
   s[start + maxLength] = '\0';
 
   return &s[start];
+}
+
+// #7 reverse integer
+
+int reverse(int x) {
+
+  char *str = malloc(12);
+  if (str == NULL)
+    return 1;
+  snprintf(str, 12, "%d", x);
+
+  int len = strlen(str);
+  char *temp = malloc(len + 1);
+
+  int start = 0;
+  if (*str == '-') {
+    temp[0] = str[0];
+    start = 1;
+  }
+
+  for (int i = start; i < len; i++) {
+    temp[i] = str[len - 1 - (i - start)];
+  }
+  temp[len] = '\0';
+  long long strToInt = strtoll(temp, NULL, 10);
+  if (strToInt > INT_MAX || strToInt < INT_MIN) {
+    free(temp);
+    return 0;
+  }
+
+  free(temp);
+  return strToInt;
 }
