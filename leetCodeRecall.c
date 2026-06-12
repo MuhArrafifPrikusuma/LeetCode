@@ -1,13 +1,14 @@
 // # 1 two sum
 #include <stdlib.h>
 #include <string.h>
+
 typedef struct {
   int value;
-  int indexVal;
+  int index;
 } HashMap;
 int *twoSum(int *nums, int numsSize, int target, int *returnSize) {
-  int hashSize = numsSize * 2;
   *returnSize = 2;
+  int hashSize = numsSize * 2;
 
   int *result = malloc(*returnSize * sizeof(int));
 
@@ -20,22 +21,22 @@ int *twoSum(int *nums, int numsSize, int target, int *returnSize) {
 
     while (occupied[hashIndex]) {
       if (hashTable[hashIndex].value == missing) {
-        result[0] = hashTable[hashIndex].indexVal;
+        result[0] = hashTable[hashIndex].index;
         result[1] = i;
 
-        free(hashTable);
         free(occupied);
+        free(hashTable);
         return result;
       }
-      hashIndex = (hashIndex + 1) % hashSize;
+      hashIndex = hashIndex + 1 % hashSize;
     }
-    int insertIndex = abs(nums[i]) % hashSize;
-    while (occupied[insertIndex]) {
-      insertIndex = (insertIndex + 1) % hashSize;
+    int giveIndex = abs(nums[i]) % hashSize;
+    while (occupied[giveIndex]) {
+      giveIndex = giveIndex + 1 % hashSize;
     }
-    result[0] = hashTable[insertIndex].value = nums[i];
-    result[0] = hashTable[insertIndex].indexVal = i;
-    occupied[insertIndex] = 1;
+    result[0] = hashTable[giveIndex].value = nums[i];
+    result[1] = hashTable[giveIndex].index = i;
+    occupied[giveIndex] = 1;
   }
   free(hashTable);
   free(occupied);
