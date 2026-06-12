@@ -1,46 +1,53 @@
-/*index
- * leetcode #1
- */
+#include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/types.h>
+/*index
+ * leetcode #1
+ */
 typedef struct {
-  int key;
+  int val;
   int index;
-} HashEntry;
+} HashMap;
 
 int *twoSum(int *nums, int numsSize, int target, int *returnSize) {
   *returnSize = 2;
+  int hashSize = numsSize * 2;
+
   int *result = malloc(*returnSize * sizeof(int));
 
-  int tableSize = numsSize * 2;
-  HashEntry *hashTable = calloc(tableSize, sizeof(HashEntry));
-  int *occupied = calloc(tableSize, sizeof(int));
+  HashMap *hashTable = calloc(hashSize, sizeof(HashMap));
+  int *occupied = calloc(hashSize, sizeof(int));
 
   for (int i = 0; i < numsSize; i++) {
-    int missingPartner = target - nums[i];
-    int hashIndex = abs(missingPartner) % tableSize;
+    int missing = target - nums[i];
+    int hashIndex = abs(missing) % hashSize;
+
     while (occupied[hashIndex]) {
-      if (hashTable[hashIndex].key == missingPartner) {
+      if (hashTable[hashIndex].val == missing) {
         result[0] = hashTable[hashIndex].index;
         result[1] = i;
-        free(hashTable);
+
         free(occupied);
+        free(hashTable);
         return result;
       }
-      hashIndex = (hashIndex + 1) % tableSize;
+      hashIndex = hashIndex + 1 % hashSize;
     }
-    int insertIndex = abs(nums[i]) % tableSize;
-    while (occupied[insertIndex]) {
-      insertIndex = (insertIndex + 1) % tableSize;
+
+    int giveIndex = abs(nums[i]) % hashSize;
+    while (occupied[giveIndex]) {
+      giveIndex = giveIndex + 1 % hashSize;
     }
-    hashTable[insertIndex].key = nums[i];
-    hashTable[insertIndex].index = i;
-    occupied[insertIndex] = 1;
+    result[0] = hashTable[giveIndex].val = nums[i];
+    result[1] = hashTable[giveIndex].index = i;
+    occupied[giveIndex] = 1;
   }
-  free(hashTable);
   free(occupied);
+  free(hashTable);
+  *returnSize = 0;
   return NULL;
 }
 /*
@@ -174,7 +181,6 @@ int **threeSum(int *nums, int numsSize, int *returnSize,
 }
 
 // # 2 add Two Numbers
-
 struct ListNode {
   int val;
   struct ListNode *next;
@@ -185,6 +191,7 @@ struct ListNode *addTwoNumbers(struct ListNode *l1, struct ListNode *l2) {
   dummy.next = NULL;
 
   int carry = 0;
+
   struct ListNode *current = &dummy;
   while (l1 != NULL || l2 != NULL || carry != 0) {
     int val1 = (l1 != NULL) ? l1->val : 0;
@@ -211,24 +218,86 @@ struct ListNode *addTwoNumbers(struct ListNode *l1, struct ListNode *l2) {
 }
 
 // #3 Longest Substring Without repeating characters
-
 int lengthOfLongestSubstring(char *s) {
   int lastSeen[128] = {0};
   int maxLength = 0;
   int left = 0;
-
   for (int right = 0; s[right] != '\0'; right++) {
-    unsigned char currentChar = s[right];
-
-    if (lastSeen[currentChar] > left) {
+    uint currentChar = s[right];
+    while (lastSeen[currentChar] > left) {
       left = lastSeen[currentChar];
     }
     lastSeen[currentChar] = right + 1;
 
     int currentWindowLength = right - left + 1;
-    if (currentWindowLength > maxLength) {
+    if (currentWindowLength > maxLength)
       maxLength = currentWindowLength;
-    }
   }
   return maxLength;
+}
+// #4 Median of two sorted arrays
+
+double findMedianSortedArrays(int *nums1, int nums1Size, int *nums2,
+                              int nums2Size) {
+  if (nums1Size > nums2Size) {
+    int *tempArr = nums1;
+    nums1 = nums2;
+    nums2 = tempArr;
+    int tempSize = nums1Size;
+    nums1Size = nums2Size;
+    nums2Size = tempSize;
+  }
+  int m = nums1Size;
+  int n = nums2Size;
+  int low = 0;
+  int high = nums2Size;
+  int totalLeft = (m + n + 1) / 2;
+
+  while (low <= high) {
+    int i = (low + high) / 2;
+    int j = totalLeft - i;
+
+    int aLeft = (i == 0) ? INT_MIN : nums1[i - 1];
+    int aRight = (i == m) ? INT_MAX : nums1[i];
+
+    int bLeft = (j == 0) ? INT_MIN : nums2[j - 1];
+    int bRight = (j == m) ? INT_MAX : nums2[j];
+
+    if (aLeft <= bRight && bLeft <= aRight) {
+    }
+  }
+}
+/*
+ * # 5 Longest Palindromic substring
+ */
+int expandOutward(char *s, int left, int right) {
+  while (left >= 0 && s[right] != '\0' && s[left] == s[right]) {
+    left--;
+    right++;
+  }
+  return right - left - 1;
+}
+char *longestPalindrome(char *s) {
+  if (s == NULL || strlen(s) < 1)
+    return "";
+
+  int start = 0;
+  int maxLength = 0;
+  int len = strlen(s);
+
+  for (int i = 0; i < len; i++) {
+
+    int len1 = expandOutward(s, i, i);
+    int len2 = expandOutward(s, i, i + 1);
+
+    int currentMax = (len1 > len2) ? len1 : len2;
+
+    if (currentMax > maxLength) {
+      maxLength = currentMax;
+      start = i - (maxLength - 1) / 2;
+    }
+  }
+  s[start + maxLength] = '\0';
+
+  return &s[start];
 }
