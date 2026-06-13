@@ -334,3 +334,35 @@ int reverse(int x) {
   free(temp);
   return strToInt;
 }
+
+// # 8 string to integer
+int myAtoi(char *s) {
+  int len = strlen(s);
+  int isNegative = 1;
+  long result = 0;
+  int i = 0;
+
+  while (s[i] == ' ') {
+    i++;
+  }
+  if (s[i] == '+' || s[i] == '-') {
+    if (s[i] == '-')
+      isNegative = -1;
+    i++;
+  }
+
+  while (s[i] >= '0' && s[i] <= '9') {
+    result = result * 10 + (s[i] - '0');
+
+    if (result >= INT_MAX || result <= INT_MIN) {
+      if (isNegative == 1 && result > INT_MAX)
+        return INT_MAX;
+      if (isNegative == -1 && -result < INT_MIN)
+        return INT_MIN;
+    }
+
+    i++;
+  }
+
+  return (int)(result * isNegative);
+}
