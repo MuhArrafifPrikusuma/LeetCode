@@ -3,60 +3,57 @@
 #include <string.h>
 
 typedef struct {
-  int value;
+  int val;
   int index;
-} HashMap;
+} LookUp;
 int *twoSum(int *nums, int numsSize, int target, int *returnSize) {
   *returnSize = 2;
   int hashSize = numsSize * 2;
 
+  LookUp *HashTable = calloc(hashSize, sizeof(LookUp));
   int *result = malloc(*returnSize * sizeof(int));
-
-  HashMap *hashTable = calloc(hashSize, sizeof(HashMap));
   int *occupied = calloc(hashSize, sizeof(int));
 
   for (int i = 0; i < numsSize; i++) {
-    int missing = target - nums[i];
-    int hashIndex = abs(missing) % hashSize;
-
-    while (occupied[hashIndex]) {
-      if (hashTable[hashIndex].value == missing) {
-        result[0] = hashTable[hashIndex].index;
+    int lookFor = target - nums[i];
+    int tableIndex = abs(lookFor) % hashSize;
+    while (occupied[tableIndex]) {
+      if (HashTable[tableIndex].val == lookFor) {
+        result[0] = HashTable[tableIndex].index;
         result[1] = i;
 
+        free(HashTable);
         free(occupied);
-        free(hashTable);
         return result;
       }
-      hashIndex = hashIndex + 1 % hashSize;
+      tableIndex = (tableIndex + 1) % hashSize;
     }
-    int giveIndex = abs(nums[i]) % hashSize;
-    while (occupied[giveIndex]) {
-      giveIndex = giveIndex + 1 % hashSize;
+    int currentIndex = abs(nums[i]) % hashSize;
+    while (occupied[currentIndex]) {
+      currentIndex = (currentIndex + 1) % hashSize;
     }
-    result[0] = hashTable[giveIndex].value = nums[i];
-    result[1] = hashTable[giveIndex].index = i;
-    occupied[giveIndex] = 1;
+    HashTable[currentIndex].val = nums[i];
+    HashTable[currentIndex].index = i;
+    occupied[currentIndex] = 1;
   }
-  free(hashTable);
   free(occupied);
+  free(HashTable);
   *returnSize = 0;
   return NULL;
 }
 
-// # 2 add Two Numbers
+// # 2 add Two Numbers ( using linked list )
 struct ListNode {
   int val;
   struct ListNode *next;
 };
 struct ListNode *addTwoNumbers(struct ListNode *l1, struct ListNode *l2) {
+  int carry = 0;
   struct ListNode dummy;
   dummy.val = 0;
-  dummy.next = NULL;
+  dummy.next = 0;
 
-  int carry = 0;
   struct ListNode *current = &dummy;
-
   while (l1 != NULL || l2 != NULL || carry != 0) {
     int val1 = (l1 != NULL) ? l1->val : 0;
     int val2 = (l2 != NULL) ? l2->val : 0;
@@ -77,11 +74,30 @@ struct ListNode *addTwoNumbers(struct ListNode *l1, struct ListNode *l2) {
       l2 = l2->next;
   }
   struct ListNode *result = dummy.next;
-
   return result;
 }
-// #5 Largest palindromic substring
-int palindromSize(char *s, int left, int right) {
+
+// # 3. Longest substring without repeating characters
+int lengthOfLongestSubstring(char *s) {
+  int seen[128] = {0};
+  int maxLength = 0;
+  int left = 0;
+  for (int right = 0; s[right] != '\0'; right++) {
+    uint currentChar = s[right];
+    while (seen[currentChar] > left) {
+      left = seen[currentChar];
+    }
+    seen[currentChar] = right + 1;
+    int currentWindow = right - left + 1;
+    if (currentWindow > maxLength) {
+      maxLength = currentWindow;
+    }
+  }
+  return maxLength;
+}
+
+// # 5 Longest Palindromic substring
+int expand(char *s, int left, int right) {
   while (left >= 0 && s[right] != '\0' && s[left] == s[right]) {
     left--;
     right++;
@@ -89,13 +105,13 @@ int palindromSize(char *s, int left, int right) {
   return right - left - 1;
 }
 char *longestPalindrome(char *s) {
-  int start = 0;
   int maxLength = 0;
   int len = strlen(s);
+  int start = 0;
 
   for (int i = 0; i < len; i++) {
-    int len1 = palindromSize(s, i, i);
-    int len2 = palindromSize(s, i, i + 1);
+    int len1 = expand(s, i, i);
+    int len2 = expand(s, i, i + 1);
 
     int currentLength = (len1 > len2) ? len1 : len2;
 
