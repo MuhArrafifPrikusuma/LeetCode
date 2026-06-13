@@ -1,0 +1,116 @@
+# How To Think
+
+## #1 Two sum
+
+Given an array of integers nums and an integer target, return indices of the two numbers 
+such that they add up to target.
+
+- Create look up table
+- determine hash size and make sure it's bigger to prevent collision
+- from the size create a hashTable with look up struct to store all the values
+- check if table is occupied
+- if occupied then check is the value = target
+- if not store in lookUp table
+- lookFor = target - nums[i];
+- if nums[i] = lookFor, nums[i] return index of nums[i] else if (nums[i]) != lookFor
+then store nums[i] index and value in look up table
+
+You may assume that each input would have exactly one solution, and you may not use 
+the same element twice.
+  
+- exactly one solution so returnSize will always be 2
+
+You can return the answer in any order
+
+### Example
+  
+  Input: nums = [2,7,11,15], target = 9
+  output = [0,1]
+  explanation: Because num[0] + num[1] = 9
+  return [0,1];
+
+### Constraints
+  
+  - numsLength > 2
+  - nums[i] not too big and not too small
+  - target is similar to one above
+  - only one valid answer
+  
+**Follow-Up**: come up with algorithm that is less than O(n^2) time complexity
+ 
+## #2 Add Two Numbers
+
+You are given two non-empty linked lists representing two non-negative integers. 
+The digits are stored in reverse order, and each of their nodes contains a single 
+digit. Add the two numbers and return the sum as a linked list.
+
+- create dummy node as a starting point
+- if (l1 + l2) > 9 then (l1 + l2) / 10 = carry
+- carry will be added to the next additions
+- use pointer to jump to next value by creating a new node and linking it back to the 
+first node
+- first node-> second node-> next node-> next...
+
+You may assume the two numbers do not contain any leading zero, except the number 0 
+itself.
+
+### Example
+  
+  **7->0->8**
+  Input: l1 = [2,4,3], l2 = [5,6,4]
+  Output = [7,0,8]
+  Explanation = 342 + 564 = 807
+
+### Constraints
+  
+  - Number of index in a linked list is in range of 1-100
+  - Node.val is in 1 place 
+  - List does not have leading zeros
+
+## #3 Longest Substring Without repeating Characters
+
+  Given a string s, find the length of the longest without duplicate characters. 
+
+### Example 
+  Input: s = "abcabcbb"
+  Output: 3
+  Explanation: The answer is "abc", with the length of 3. Note that "bca" and "cab"
+  are also correct answers.
+
+  - create an array to store the value of a substring
+  - determine the starting point and end point of the substring
+  - string start at any char it founds and ends when is no longer the same char
+  - every new substring compare the new lenght of the new substring with the lenght
+  of the previous substring to determine which one is larger
+
+
+### Constraints 
+  - s.length is never 0
+  - s can be English letters, digits, symbols and spaces
+
+## #4 Longest Palindromic Substring
+
+  Given a string s, return the longest in s.
+
+  - check what condition does it need to be a palindrome
+    - the first condition is the middle can contain either 1 or 2 of the same char if
+    the palindrome is even
+    - then expand outwards from the middle and check if the left char is equal to the
+    right
+  - we will need a helper function for that
+    - the helper function should be given the char, the starting point and the end point
+    of the character in the middle of the palindrome
+  - place all that in a loop and use i as the middle of palindrome 
+  - then check the currentLenght by checking which one is larger, either the palindrome
+  with i, i+1 or i
+  - if the current lenght is larger than the maxlenght then maxlength = currentlength
+  - now we need a starting point of the palindrome that we will display and for that we need
+    - start = i - (maxlength - 1) / 2
+
+
+### Example
+  
+  Input: s = "babad"
+  Output: "bab"
+  Explanation: "aba" is also a valid answer.
+
