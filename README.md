@@ -114,3 +114,58 @@ itself.
   Output: "bab"
   Explanation: "aba" is also a valid answer.
 
+## #6 Zigzag Conversion
+
+The string "PAYPALISHIRING" is written in a zigzag pattern on a given number of rows
+like this: (you may want to display this pattern in a fixed font for better 
+legibility)
+
+  P   A   H   N
+  A P L S I I G
+  Y   I   R
+
+And then read line by line: "PAHNAPLSIIGYIR"
+
+  - if numRows == 1  || numRows >= strlen(s) then we just return *s
+  - since numsRows = 3 we will need to take the next value on that first row first.
+  so i think i can do 
+
+     for (int i = 0; i < numRows; i++){
+        for (int j = 0; j < length ; j += 2 * numRows - 2)
+     }
+
+  - 2* numRows - 2 is the same when we tried with numRows == 3 and numRows == 4 so
+  we will try that
+  - then resultIdx = -1 and do resultIdx++ on every single loop
+  - and then we will assign resultIdx = s[j + i]
+  - and then if is not on the first row anymore we need to jump small since well we can't
+  simply increase j anymore because it will add more than one so we can do this
+  if (i != 0 && i != numRows - 1); we will do int middleIdx = j + (2 * numRows - 2) - i
+  and then we will assign result to that middleIdx position
+
+Write the code that will take a string and make this conversion given a number of 
+rows:
+
+string convert(string s, int numRows);
+
+### Example 1
+  
+  Input: s = "PAYPALISHIRING", numRows = 3
+  Output: "PAHNAPLSIIGYIR"
+
+### Example 2
+
+  Input: s = "PAYPALISHIRING", numRows = 4
+  Output: "PINALSIGYAHRPI"
+  Explanation:
+  P     I    N
+  A   L S  I G
+  Y A   H R
+  P     I
+
+### Constraints:
+  
+  - s.length > 1
+  - s contain letters, both lower and upper and also ',' and '.'
+  - 1 <= numRows <= 1000
+
