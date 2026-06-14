@@ -366,3 +366,29 @@ int myAtoi(char *s) {
 
   return (int)(result * isNegative);
 }
+
+// #6. Zigzag Convertion
+char *convert(char *s, int numRows) {
+  int len = strlen(s);
+  if (numRows == 1 || numRows == len)
+    return strdup(s);
+
+  char *result = (char *)malloc((len + 1) * sizeof(char));
+  int jump = (2 * numRows) - 2;
+  int resultIdx = 0;
+
+  for (int i = 0; i < numRows; i++) {
+    for (int j = 0; j + i < len; j += jump) {
+      result[resultIdx++] = s[j + i];
+
+      if (i != 0 && i != numRows - 1) {
+        int middleIdx = j + jump - i;
+        if (middleIdx < len)
+          result[resultIdx++] = s[middleIdx];
+      }
+    }
+  }
+  result[resultIdx] = '\0';
+
+  return result;
+}
