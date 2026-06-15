@@ -2,7 +2,7 @@
 
 ## #1 Two sum
 
-Given an array of integers nums and an integer target, return indices of the two numbers 
+Given an array of integers nums and an integer target, return indices of the two numbers
 such that they add up to target.
 
 - Create look up table
@@ -15,7 +15,7 @@ such that they add up to target.
 - if nums[i] = lookFor, nums[i] return index of nums[i] else if (nums[i]) != lookFor
 then store nums[i] index and value in look up table
 
-You may assume that each input would have exactly one solution, and you may not use 
+You may assume that each input would have exactly one solution, and you may not use
 the same element twice.
   
 - exactly one solution so returnSize will always be 2
@@ -31,27 +31,27 @@ You can return the answer in any order
 
 ### Constraints
   
-  - numsLength > 2
-  - nums[i] not too big and not too small
-  - target is similar to one above
-  - only one valid answer
+- numsLength > 2
+- nums[i] not too big and not too small
+- target is similar to one above
+- only one valid answer
   
 **Follow-Up**: come up with algorithm that is less than O(n^2) time complexity
- 
+
 ## #2 Add Two Numbers
 
-You are given two non-empty linked lists representing two non-negative integers. 
-The digits are stored in reverse order, and each of their nodes contains a single 
+You are given two non-empty linked lists representing two non-negative integers.
+The digits are stored in reverse order, and each of their nodes contains a single
 digit. Add the two numbers and return the sum as a linked list.
 
 - create dummy node as a starting point
 - if (l1 + l2) > 9 then (l1 + l2) / 10 = carry
 - carry will be added to the next additions
-- use pointer to jump to next value by creating a new node and linking it back to the 
+- use pointer to jump to next value by creating a new node and linking it back to the
 first node
 - first node-> second node-> next node-> next...
 
-You may assume the two numbers do not contain any leading zero, except the number 0 
+You may assume the two numbers do not contain any leading zero, except the number 0
 itself.
 
 ### Example
@@ -63,50 +63,50 @@ itself.
 
 ### Constraints
   
-  - Number of index in a linked list is in range of 1-100
-  - Node.val is in 1 place 
-  - List does not have leading zeros
+- Number of index in a linked list is in range of 1-100
+- Node.val is in 1 place
+- List does not have leading zeros
 
 ## #3 Longest Substring Without repeating Characters
 
-  Given a string s, find the length of the longest without duplicate characters. 
+  Given a string s, find the length of the longest without duplicate characters.
 
-### Example 
+### Example
+
   Input: s = "abcabcbb"
   Output: 3
   Explanation: The answer is "abc", with the length of 3. Note that "bca" and "cab"
   are also correct answers.
 
-  - create an array to store the value of a substring
-  - determine the starting point and end point of the substring
-  - string start at any char it founds and ends when is no longer the same char
-  - every new substring compare the new lenght of the new substring with the lenght
+- create an array to store the value of a substring
+- determine the starting point and end point of the substring
+- string start at any char it founds and ends when is no longer the same char
+- every new substring compare the new lenght of the new substring with the lenght
   of the previous substring to determine which one is larger
 
+### Constraints
 
-### Constraints 
-  - s.length is never 0
-  - s can be English letters, digits, symbols and spaces
+- s.length is never 0
+- s can be English letters, digits, symbols and spaces
 
 ## #4 Longest Palindromic Substring
 
   Given a string s, return the longest in s.
 
-  - check what condition does it need to be a palindrome
-    - the first condition is the middle can contain either 1 or 2 of the same char if
+- check what condition does it need to be a palindrome
+  - the first condition is the middle can contain either 1 or 2 of the same char if
     the palindrome is even
-    - then expand outwards from the middle and check if the left char is equal to the
+  - then expand outwards from the middle and check if the left char is equal to the
     right
-  - we will need a helper function for that
-    - the helper function should be given the char, the starting point and the end point
+- we will need a helper function for that
+  - the helper function should be given the char, the starting point and the end point
     of the character in the middle of the palindrome
-  - place all that in a loop and use i as the middle of palindrome 
-  - then check the currentLenght by checking which one is larger, either the palindrome
+- place all that in a loop and use i as the middle of palindrome
+- then check the currentLenght by checking which one is larger, either the palindrome
   with i, i+1 or i
-  - if the current lenght is larger than the maxlenght then maxlength = currentlength
-  - now we need a starting point of the palindrome that we will display and for that we need
-    - start = i - (maxlength - 1) / 2
-
+- if the current lenght is larger than the maxlenght then maxlength = currentlength
+- now we need a starting point of the palindrome that we will display and for that we need
+  - start = i - (maxlength - 1) / 2
 
 ### Example
   
@@ -117,7 +117,7 @@ itself.
 ## #6 Zigzag Conversion
 
 The string "PAYPALISHIRING" is written in a zigzag pattern on a given number of rows
-like this: (you may want to display this pattern in a fixed font for better 
+like this: (you may want to display this pattern in a fixed font for better
 legibility)
 
   P   A   H   N
@@ -126,24 +126,24 @@ legibility)
 
 And then read line by line: "PAHNAPLSIIGYIR"
 
-  - if numRows == 1  || numRows >= strlen(s) then we just return *s
-  - since numsRows = 3 we will need to take the next value on that first row first.
-  so i think i can do 
+- if numRows == 1  || numRows >= strlen(s) then we just return *s
+- since numsRows = 3 we will need to take the next value on that first row first.
+  so i think i can do
 
      for (int i = 0; i < numRows; i++){
         for (int j = 0; j < length ; j += 2 * numRows - 2)
      }
 
-  - 2* numRows - 2 is the same when we tried with numRows == 3 and numRows == 4 so
+- 2* numRows - 2 is the same when we tried with numRows == 3 and numRows == 4 so
   we will try that
-  - then resultIdx = -1 and do resultIdx++ on every single loop
-  - and then we will assign resultIdx = s[j + i]
-  - and then if is not on the first row anymore we need to jump small since well we can't
+- then resultIdx = -1 and do resultIdx++ on every single loop
+- and then we will assign resultIdx = s[j + i]
+- and then if is not on the first row anymore we need to jump small since well we can't
   simply increase j anymore because it will add more than one so we can do this
   if (i != 0 && i != numRows - 1); we will do int middleIdx = j + (2 * numRows - 2) - i
   and then we will assign result to that middleIdx position
 
-Write the code that will take a string and make this conversion given a number of 
+Write the code that will take a string and make this conversion given a number of
 rows:
 
 string convert(string s, int numRows);
@@ -163,9 +163,32 @@ string convert(string s, int numRows);
   Y A   H R
   P     I
 
-### Constraints:
+### Constraints
   
-  - s.length > 1
-  - s contain letters, both lower and upper and also ',' and '.'
-  - 1 <= numRows <= 1000
+- s.length > 1
+- s contain letters, both lower and upper and also ',' and '.'
+- 1 <= numRows <= 1000
+
+## #11 Container with most water
+
+  You are given an integer array height of length n. There are n vertical lines drawn such that
+  the two endpoints of the ith line are (i, 0) and (i, height[i]).
+
+  Find two lines that together with the x-axis form a container, such that the container
+  contains the most water.
+
+  Return the maximum amount of water a container can store.
+
+  **Notice** that you may not slant the container.
+
+  - HeightSize is the len of Height
+  - place 1 pointer on the start and 1 at the end
+    - if 1 of them is smaller than the other then move to the center
+      - if it move and it get smaller then go back to the previous place
+
+### Example
+  Input: height = [1,8,6,2,5,4,8,3,7]
+  Output: 49
+  Explanation: The above vertical lines are represented by array [1,8,6,2,5,4,8,3,7]. In this
+  case, the max area of water (blue section) the container can contain is 49.
 

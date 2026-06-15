@@ -392,3 +392,29 @@ char *convert(char *s, int numRows) {
 
   return result;
 }
+// #11 container with most water
+
+int maxArea(int *height, int heightSize) {
+  int left = 0;
+  int right = heightSize - 1;
+  int maxWater = 0;
+
+  while (left < right) {
+    int width = right - left;
+    int minHeight =
+        (height[left] < height[right]) ? height[left] : height[right];
+
+    int currentWater = width * minHeight;
+
+    if (currentWater > maxWater) {
+      maxWater = currentWater;
+    }
+
+    if (height[left] < height[right]) {
+      left++;
+    } else {
+      right--;
+    }
+  }
+  return maxWater;
+}
