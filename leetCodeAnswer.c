@@ -93,17 +93,18 @@ int romanToValue(char c) {
 }
 int romanToInt(char *s) {
   int total = 0;
-  int length = strlen(s);
-  for (int i = 0; i < length; i++) {
-    int currentValue = romanToValue(s[i]);
-    if (i + 1 < length && currentValue < romanToValue(s[i + 1])) {
-      total -= currentValue;
+  int len = strlen(s);
+  for (int i = 0; i < len; i++) {
+    int currentvalue = romanToValue(s[i]);
+    if (i + 1 < len && currentvalue < romanToValue(s[i + 1])) {
+      total -= currentvalue;
     } else {
-      total += currentValue;
+      total += currentvalue;
     }
   }
   return total;
 }
+
 /*
  * leetCode #14
  */
@@ -417,4 +418,24 @@ int maxArea(int *height, int heightSize) {
     }
   }
   return maxWater;
+}
+
+// #12 Integer to Roman
+
+char *intToRoman(int num) {
+  char *roman[] = {"M",  "CM", "D",  "CD", "C",  "XC", "L",
+                   "XL", "X",  "IX", "V",  "IV", "I"};
+  int value[] = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
+
+  int j = 0;
+  char *result = malloc(16);
+  result[0] = '\0';
+
+  for (int i = 0; i < 13; i++) {
+    while (num >= value[i]) {
+      strcat(result, roman[i]);
+      num -= value[i];
+    }
+  }
+  return result;
 }

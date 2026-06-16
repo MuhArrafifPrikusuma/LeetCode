@@ -192,3 +192,102 @@ string convert(string s, int numRows);
   Explanation: The above vertical lines are represented by array [1,8,6,2,5,4,8,3,7]. In this
   case, the max area of water (blue section) the container can contain is 49.
 
+## #12 Integer to Roman
+
+  Seven different symbols represent Roman numerals with the following values:
+  Symbol	Value
+    I	      1
+    V	      5
+    X	      10
+    L	      50
+    C	      100
+    D	      500
+    M	      1000
+  
+  Roman numerals are formed by appending the conversions of decimal place values from highest to 
+  lowest. Converting a decimal place value into a Roman numeral has the following rules:
+  
+    - If the value does not start with 4 or 9, select the symbol of the maximal value that can
+      be subtracted from the input, append that symbol to the result, subtract its value, and
+      convert the remainder to a Roman numeral.
+
+    - If the value starts with 4 or 9 use the subtractive form representing one symbol 
+      subtracted from the following symbol, for example, 4 is 1 (I) less than 5 (V): IV and 9
+      is 1 (I) less than 10 (X): IX. Only the following subtractive forms are used: 4 (IV), 9
+      (IX), 40 (XL), 90 (XC), 400 (CD) and 900 (CM).
+
+    - Only powers of 10 (I, X, C, M) can be appended consecutively at most 3 times to represent
+      multiples of 10. You cannot append 5 (V), 50 (L), or 500 (D) multiple times. If you need 
+      to append a symbol 4 times use the subtractive form.
+  
+  Given an integer, convert it to a Roman numeral.  
+
+  - basically just make an array with all the values and another array with all the char
+    and then loop through it while substracting the value of the input
+
+## #11 Roman to integer
+
+  Roman numerals are represented by seven different symbols: I, V, X, L, C, D and M.
+
+  Symbol       Value
+    I             1
+    V             5
+    X             10
+    L             50
+    C             100
+    D             500
+    M             1000
+
+  For example, 2 is written as II in Roman numeral, just two ones added together. 12 is written
+  as XII, which is simply X + II. The number 27 is written as XXVII, which is XX + V + II.
+
+  Roman numerals are usually written largest to smallest from left to right. However, the numeral
+  for four is not IIII. Instead, the number four is written as IV. Because the one is before the 
+  five we subtract it making four. The same principle applies to the number nine, which is written 
+  as IX. There are six instances where subtraction is used:
+   
+    I can be placed before V (5) and X (10) to make 4 and 9. 
+    X can be placed before L (50) and C (100) to make 40 and 90. 
+    C can be placed before D (500) and M (1000) to make 400 and 900.
+
+  Given a roman numeral, convert it to an integer.
+
+    - this one is incredibly easy just use a switch case to determine each char value and then
+      - loop through everything by using the length of the string and then we just need to check
+        if the current value is lower than the value after then we will substract current value
+        from total else we add and then return the total
+
+## #14. Longest Common Prefix
+
+  Write a function to find the longest common prefix string amongst an array of strings.
+
+  If there is no common prefix, return an empty string "".
+
+### Example 
+
+  Input: strs = ["dog","racecar","car"]
+  Output: ""
+  Explanation: There is no common prefix among the input strings.
+
+  - this is also really easy all i need to do is store the value i as the value of the current
+    char and store j as the value of the current string and then just loop use double loop like
+    this
+    
+      for(int i = 0; char[i] != '\0'; i++){
+      char currentchar = char[i];
+        for (int j = 0; j < strSize; j++){
+          if (strs[j][i] == '\0' || strs[j][i] != currentchar){
+            char[i] = '\0';
+            return char;
+          }
+        }
+      }
+
+  - what it does? well basically loops through every string with j and then loop through char 
+    with i and store currentchar to be compared with the char in the same char index as the
+    previous string
+
+## #15. 3Sum
+
+
+
