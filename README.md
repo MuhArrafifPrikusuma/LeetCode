@@ -287,7 +287,29 @@ string convert(string s, int numRows);
     with i and store currentchar to be compared with the char in the same char index as the
     previous string
 
-## #15. 3Sum
+## #17. Lettter Combinations of a phone number
 
+  Given a string containing digits from 2-9 inclusive, return all possible letter combinations 
+  that the number could represent. Return the answer in any order.
 
+  A mapping of digits to letters (just like on the telephone buttons) is given below. Note that 
+  1 does not map to any letters.
 
+### Constraints
+  
+    1 <= digits.length <= 4
+    digits[i] is a digit in the range ['2', '9'].
+
+### Example 
+  
+  Input: digits = "23"
+  Output: ["ad","ae","af","bd","be","bf","cd","ce","cf"]
+
+    - this one is very easy the returnSize will be *returnSize = malloc(strlen(digits) * pow(3);
+    - since 1 and 0 is not going to be inside of digits then it would be easier since there is
+      no need to check whether it's valid or not
+    - bascially the code will be -> take the digits one by one and define what's their possible
+      chars and then we take it and mix everything that doesn't already exist
+    - Nevermind this is not easy this is bullshit
+    - create helper functions to take the index of an array, store combinations and check whether
+      the current combinations already exist and then

@@ -1,43 +1,45 @@
 // # 1 two sum
+#include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
-
 typedef struct {
   int val;
   int index;
 } LookUp;
 int *twoSum(int *nums, int numsSize, int target, int *returnSize) {
-  *returnSize = 2;
   int hashSize = numsSize * 2;
+  *returnSize = 2;
 
-  LookUp *HashTable = calloc(hashSize, sizeof(LookUp));
+  LookUp *table = calloc(hashSize, sizeof(LookUp));
   int *result = malloc(*returnSize * sizeof(int));
   int *occupied = calloc(hashSize, sizeof(int));
 
   for (int i = 0; i < numsSize; i++) {
-    int lookFor = target - nums[i];
-    int tableIndex = abs(lookFor) % hashSize;
-    while (occupied[tableIndex]) {
-      if (HashTable[tableIndex].val == lookFor) {
-        result[0] = HashTable[tableIndex].index;
+    int missing = target - nums[i];
+    int hashIndex = abs(missing) % hashSize;
+
+    while (occupied[hashIndex]) {
+      if (table[hashIndex].val == missing) {
+        result[0] = table[hashIndex].index;
         result[1] = i;
 
-        free(HashTable);
+        free(table);
         free(occupied);
         return result;
       }
-      tableIndex = (tableIndex + 1) % hashSize;
+      hashIndex = (hashIndex + 1) % hashSize;
     }
-    int currentIndex = abs(nums[i]) % hashSize;
-    while (occupied[currentIndex]) {
-      currentIndex = (currentIndex + 1) % hashSize;
+    int addIndex = abs(nums[i]) % hashSize;
+    while (occupied[addIndex]) {
+      addIndex = (addIndex + 1) % hashSize;
     }
-    HashTable[currentIndex].val = nums[i];
-    HashTable[currentIndex].index = i;
-    occupied[currentIndex] = 1;
+    table[addIndex].val = nums[i];
+    table[addIndex].index = i;
+    occupied[addIndex] = 1;
   }
+
+  free(table);
   free(occupied);
-  free(HashTable);
   *returnSize = 0;
   return NULL;
 }
@@ -48,10 +50,11 @@ struct ListNode {
   struct ListNode *next;
 };
 struct ListNode *addTwoNumbers(struct ListNode *l1, struct ListNode *l2) {
-  int carry = 0;
   struct ListNode dummy;
   dummy.val = 0;
-  dummy.next = 0;
+  dummy.next = NULL;
+
+  int carry = 0;
 
   struct ListNode *current = &dummy;
   while (l1 != NULL || l2 != NULL || carry != 0) {
@@ -74,38 +77,40 @@ struct ListNode *addTwoNumbers(struct ListNode *l1, struct ListNode *l2) {
       l2 = l2->next;
   }
   struct ListNode *result = dummy.next;
+
   return result;
 }
 
 // # 3. Longest substring without repeating characters
 int lengthOfLongestSubstring(char *s) {
   int seen[128] = {0};
-  int maxLength = 0;
-  int left = 0;
-  for (int right = 0; s[right] != '\0'; right++) {
-    uint currentChar = s[right];
-    while (seen[currentChar] > left) {
-      left = seen[currentChar];
+  int longest = 0;
+  int delete = 0;
+  for (int add = 0; s[add] != '\0'; add++) {
+    uint currentChar = s[add];
+    while (seen[currentChar] > delete) {
+      delete = seen[currentChar];
     }
-    seen[currentChar] = right + 1;
-    int currentWindow = right - left + 1;
-    if (currentWindow > maxLength) {
-      maxLength = currentWindow;
+    seen[currentChar] = add + 1;
+    int currentWindow = add - delete + 1;
+    if (currentWindow > longest) {
+      longest = currentWindow;
     }
   }
-  return maxLength;
+  return longest;
 }
 
 // # 5 Longest Palindromic substring
-int expand(char *s, int left, int right) {
-  while (left >= 0 && s[right] != '\0' && s[left] == s[right]) {
+int expand(char *string, int left, int right) {
+  while (left >= 0 && string[right] != '\0' && string[left] == string[right]) {
     left--;
     right++;
   }
   return right - left - 1;
 }
+
 char *longestPalindrome(char *s) {
-  int maxLength = 0;
+  int maxlen = 0;
   int len = strlen(s);
   int start = 0;
 
@@ -113,14 +118,20 @@ char *longestPalindrome(char *s) {
     int len1 = expand(s, i, i);
     int len2 = expand(s, i, i + 1);
 
-    int currentLength = (len1 > len2) ? len1 : len2;
-
-    if (currentLength > maxLength) {
-      maxLength = currentLength;
-      start = i - (maxLength - 1) / 2;
+    int currentLen = (len1 > len2) ? len1 : len2;
+    if (currentLen > maxlen) {
+      maxlen = currentLen;
+      start = i - (maxlen - 1) / 2;
     }
   }
-  s[start + maxLength] = '\0';
+  s[start + maxlen] = '\0';
 
-  return &s[start];
+  return s + start;
+}
+
+// #6. Zigzag Conversion
+
+char *convert(char *s, int numRows) {
+  int len = strlen(s);
+  char *result = malloc(sizeof(s));
 }
