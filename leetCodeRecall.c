@@ -1,4 +1,6 @@
 // # 1 two sum
+#include <limits.h>
+#include <math.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
@@ -131,7 +133,44 @@ char *longestPalindrome(char *s) {
 
 // #6. Zigzag Conversion
 
-char *convert(char *s, int numRows) {
+char *convert(char *s, int numrows) {
   int len = strlen(s);
-  char *result = malloc(sizeof(s));
+  if (numrows == 1 || numrows == len)
+    return strdup(s);
+
+  int jump = (2 * numrows) - 2;
+  char *result = (char *)malloc((len + 1) * sizeof(char));
+  int resultindex = 0;
+
+  for (int i = 0; i < numrows; i++) {
+    for (int j = 0; j + i < len; j += jump) {
+      result[resultindex++] = s[j + i];
+
+      if (i != 0 && i != numrows - 1) {
+        int middleindex = j + jump - i;
+        if (middleindex < len)
+          result[resultindex++] = s[middleindex];
+      }
+    }
+  }
+  result[resultindex] = '\0';
+  return result;
+}
+
+// #6 Reverse integer
+
+int reverse(int x) {
+  if (x >= INT_MAX || x <= INT_MIN || x == 0)
+    return 0;
+  long reverse = 0;
+
+  while (x != 0) {
+
+    reverse = (reverse * 10) + (x % 10);
+    x /= 10;
+  }
+  if (reverse >= INT_MAX || reverse <= INT_MIN)
+    return 0;
+
+  return (int)reverse;
 }
