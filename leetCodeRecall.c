@@ -1,6 +1,7 @@
 // # 1 two sum
 #include <limits.h>
 #include <math.h>
+#include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
@@ -201,4 +202,19 @@ int myAtoi(char *s) {
   }
 
   return (int)(result * FlagNeg);
+}
+
+// #9. Palindrome Number
+// also very easy no need to explain i can already understand just by looking at
+// it for a few second
+bool isPalindrome(int x) {
+  if (x < 0)
+    return false;
+  long reverse = 0;
+  int original = x;
+  while (x != 0) {
+    reverse = (reverse * 10) + (x % 10);
+    x /= 10;
+  }
+  return original == reverse;
 }
