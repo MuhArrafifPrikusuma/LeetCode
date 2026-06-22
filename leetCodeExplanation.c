@@ -1,6 +1,7 @@
 /*
  * leetcode #1
  */
+#include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -202,4 +203,19 @@ struct ListNode *addTwoNumbers(struct ListNode *l1, struct ListNode *l2) {
   // assign the pointer to the first valid node right after the dummy node
   struct ListNode *result = dummy.next;
   return result;
+}
+
+// # 7. Reverse Integer
+
+// why is this so easy? yet is labeled medium for some reason. no explanation
+// needed
+int reverse(int x) {
+  long rev = 0;
+  while (x != 0) {
+    rev = (rev * 10) + (x % 10);
+    x /= 10;
+  }
+  if (rev >= INT_MAX || rev <= INT_MIN)
+    return 0;
+  return (int)rev;
 }
