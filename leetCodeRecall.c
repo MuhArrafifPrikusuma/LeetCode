@@ -218,3 +218,28 @@ bool isPalindrome(int x) {
   }
   return original == reverse;
 }
+
+// #11. Container with most water
+
+int maxArea(int *height, int heightSize) {
+  int right = heightSize - 1;
+  int left = 0;
+  int maxVolume = 0;
+
+  while (left < right) {
+    int minHeight =
+        (height[left] < height[right]) ? height[left] : height[right];
+    int width = right - left;
+
+    int currentVolume = width * minHeight;
+
+    if (currentVolume > maxVolume)
+      maxVolume = currentVolume;
+
+    if (height[left] < height[right])
+      left++;
+    else
+      right--;
+  }
+  return maxVolume;
+}
