@@ -6,43 +6,44 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/types.h>
+
 typedef struct {
-  int val;
-  int index;
-} LookUp;
+  int value;
+  int idx;
+} HashMap;
 int *twoSum(int *nums, int numsSize, int target, int *returnSize) {
   int hashSize = numsSize * 2;
   *returnSize = 2;
 
-  LookUp *table = calloc(hashSize, sizeof(LookUp));
+  HashMap *hashTable = calloc(hashSize, sizeof(HashMap));
+
   int *result = malloc(*returnSize * sizeof(int));
+
   int *occupied = calloc(hashSize, sizeof(int));
 
   for (int i = 0; i < numsSize; i++) {
     int missing = target - nums[i];
-    int hashIndex = abs(missing) % hashSize;
-
-    while (occupied[hashIndex]) {
-      if (table[hashIndex].val == missing) {
-        result[0] = table[hashIndex].index;
+    int idx = abs(missing) % hashSize;
+    while (occupied[idx]) {
+      if (hashTable[idx].value == missing) {
+        result[0] = hashTable[idx].idx;
         result[1] = i;
 
-        free(table);
+        free(hashTable);
         free(occupied);
         return result;
       }
-      hashIndex = (hashIndex + 1) % hashSize;
+      idx = (idx + 1) % hashSize;
     }
-    int addIndex = abs(nums[i]) % hashSize;
-    while (occupied[addIndex]) {
-      addIndex = (addIndex + 1) % hashSize;
+    int assignIdx = abs(nums[i]) % hashSize;
+    while (occupied[assignIdx]) {
+      assignIdx = (assignIdx + 1) % hashSize;
     }
-    table[addIndex].val = nums[i];
-    table[addIndex].index = i;
-    occupied[addIndex] = 1;
+    hashTable[assignIdx].value = nums[i];
+    hashTable[assignIdx].idx = i;
+    occupied[assignIdx] = 1;
   }
-
-  free(table);
+  free(hashTable);
   free(occupied);
   *returnSize = 0;
   return NULL;
@@ -222,24 +223,58 @@ bool isPalindrome(int x) {
 // #11. Container with most water
 
 int maxArea(int *height, int heightSize) {
-  int right = heightSize - 1;
+  int maxV = 0;
   int left = 0;
-  int maxVolume = 0;
+  int right = heightSize - 1;
 
   while (left < right) {
-    int minHeight =
+    int minheight =
         (height[left] < height[right]) ? height[left] : height[right];
+
     int width = right - left;
 
-    int currentVolume = width * minHeight;
+    int currentVolume = width * minheight;
 
-    if (currentVolume > maxVolume)
-      maxVolume = currentVolume;
-
+    if (currentVolume > maxV)
+      maxV = currentVolume;
     if (height[left] < height[right])
       left++;
     else
       right--;
   }
-  return maxVolume;
+  return maxV;
+}
+
+// #13. Roman to integer
+int convert_roman_to_integer(char c) {
+  switch (c) {
+  case 'I':
+    return 1;
+  case 'V':
+    return 5;
+  case 'X':
+    return 10;
+  case 'L':
+    return 50;
+  case 'C':
+    return 100;
+  case 'D':
+    return 500;
+  case 'M':
+    return 1000;
+  }
+  return 0;
+}
+
+int romanToInt(char *s) {
+  int total = 0;
+  int len = strlen(s);
+  for (int i = 0; i < len; i++) {
+    int currentValue = convert_roman_to_integer(s[i]);
+    if (i + 1 < len && currentValue < convert_roman_to_integer(s[i + 1]))
+      total -= currentValue;
+    else
+      total += currentValue;
+  }
+  return total;
 }
